@@ -16,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
+    <link href="<?php echo base_url(); ?>assets/img/logo.png" rel="icon">
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url(); ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
 
@@ -50,7 +50,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-clipboard-list"></i>
                     <span>Rekap data</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -71,7 +71,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#headingUtilities"
                     aria-expanded="true" aria-controls="headingUtilities">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-bolt"></i>
                     <span>Rekapan Listrik</span>
                 </a>
                 <div id="headingUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -86,12 +86,12 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url(); ?>assets/index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-phone"></i>
                     <span>Rekapan Indihome</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url(); ?>assets/index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-water"></i>
                     <span>Rekapan Air</span></a>
             </li>
 
@@ -103,7 +103,7 @@
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
+                    <i class="fas fa-fw fa-users"></i>
                     <span>Kelola Operator</span></a>
             </li>
 
