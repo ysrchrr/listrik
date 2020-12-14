@@ -13,9 +13,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="<?php echo base_url(); ?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="<?php echo base_url(); ?>assets/img/logo.png" rel="icon">
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url(); ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
@@ -23,7 +21,17 @@
     <script src="<?php echo base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
 </head>
 <body id="page-top">
-
+<script type="text/javascript">
+$(document).ajaxStart(function() {
+    $("#ajax-wait").css({
+        left: ($(window).width() - 32) / 2 + "px", // 32 = lebar gambar
+        top: ($(window).height() - 32) / 2 + "px", // 32 = tinggi gambar
+        display: "block"
+    })
+}).ajaxComplete(function() {
+    $("#ajax-wait").fadeOut();
+});
+</script>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -43,7 +51,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url(); ?>">
+                <a class="nav-link" href="<?php echo base_url(); ?>" id="akuDimana">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>

@@ -108,6 +108,11 @@
                         </tbody> -->
                         </table>
                     </div>
+                    <div align="center">
+                        <div id='ajax-wait'>
+                            <img alt='loading...' src='<?php echo base_url()?>assets/img/ajax-loading-gif.gif' />
+                        </div>
+                    </div>  
                 </div>
             </div>
         </div>
