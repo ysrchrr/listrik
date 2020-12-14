@@ -19,7 +19,8 @@
     <link href="<?php echo base_url(); ?>assets/img/logo.png" rel="icon">
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url(); ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link href="<?php echo base_url(); ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="<?php echo base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
 </head>
 <body id="page-top">
 
@@ -41,8 +42,8 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="<?php echo base_url(); ?>assets/index.html">
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url(); ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -56,11 +57,16 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Mau rekap apa beb?</h6>
-                        <a class="collapse-item" href="buttons.html">Listrik</a>
+                        <a class="collapse-item" href="<?php echo base_url();?>rekap/listrik">Listrik</a>
                         <a class="collapse-item" href="cards.html">Indihome</a>
                         <a class="collapse-item" href="cards.html">PDAM</a>
                     </div>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url(); ?>customers/">
+                    <i class="fas fa-fw fa-users-cog"></i>
+                    <span>Kelola Pelanggan</span></a>
             </li>
             <hr class="sidebar-divider">
             <!-- Heading -->
