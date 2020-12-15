@@ -7,7 +7,7 @@
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
     </div>
     <!-- Content Row -->
-    <a href="#" class="btn btn-primary btn-icon-split" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    <a href="#" class="btn btn-primary btn-icon-split" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTambah">
         <span class="icon text-white-50">
             <i class="fas fa-user-plus"></i>
         </span>
@@ -66,21 +66,21 @@
 </div>
 <!-- End of Main Content -->
 <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambahkan Pelanggan Baru</h5>
+                <h5 class="modal-title" id="modalTambahLabel">Tambahkan Pelanggan Baru</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         <div class="modal-body">
-        <form class="needs-validation" novalidate>
+        <form class="needs-validation" id="formPelanggan" novalidate>
             <div class="form-row">
                 <div class="col-md-6 mb-3">
                     <label for="validationCustom01">ID Pelanggan</label>
-                    <input type="text" class="form-control" placeholder="Ni wajib tau ni" id="idPelanggan" name="idPelanggan" required>
+                    <input type="text" class="form-control" placeholder="Ni wajib tau ni" id="idPelanggan" name="idPelanggan" autofocus required>
                     <div class="valid-feedback">
                         Siip
                     </div>
@@ -117,7 +117,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="validationCustom03">Daya</label>
-                    <input type="text" class="form-control" placeholder="penting ni" id="daya" name="daya" required>
+                    <input type="text" class="form-control" placeholder="penting ni" id="daya" name="daya" onkeypress="buttonCan()" required>
                     <div class="invalid-feedback">
                         Kalo gatau bayar aja manual dulu, nanti di nota ada
                     </div>
@@ -126,30 +126,38 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                    <label class="form-check-label" for="invalidCheck">
-                        Yakin dh bener?
-                    </label>
-                    <div class="invalid-feedback">
-                        Centang sayang
-                    </div>
-                    <div class="valid-feedback">
-                        Mwah
-                    </div>
-                </div>
-            </div>
             </form>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            <button type="submit" class="btn btn-primary" id="btn-save">Tambahkan</button>
+            <button type="submit" class="btn btn-primary" id="btn-save" disabled="true">Tambahkan</button>
         </div>
         </div>
     </div>
     </div>
 <!-- end modal -->
+<!-- modal hapus -->
+<div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalHapusLabel">Hapus data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="delID" id="delIdPelanggan">
+                Apa km yakin mau hapus data?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ngga jadi</button>
+                <button type="button" class="btn btn-danger" id="btn-hapus">Iyaa hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal hapus -->
 <?php
 function rupiah($angka){
 	$hasil_rupiah = "Rp " . number_format($angka,2,',','.');
@@ -157,6 +165,9 @@ function rupiah($angka){
 }
 ?>
 <script type="text/javascript">
+    function buttonCan(){
+        $('#btn-save').removeAttr('disabled');
+    }
     $(document).ready(function(){
         // alert(convertToRupiah(0));
         function convertToRupiah(angka){
@@ -183,13 +194,18 @@ function rupiah($angka){
                                 // '<td>'+<?php //echo rupiah(data[i].keTokped)?>+'</td>'+
                                 '<td>'+data[i].daya+'</td>'+
                                 '<td>'+data[i].jenis+'</td>'+
-                                '<td>'+data[i].bulan+'</td>'+
-                                '<td align="center"> <button type="button" nim="'+data[i].id+'" class="edit btn btn-warning btn-sm"><i class="fa fa-edit"></i></button> '+
-                                '<button type="button" nim="'+data[i].id+'" class="edit btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>'+
+                                '<td>'+data[i].bulanIni+'</td>'+
+                                '<td align="center"> <button type="button" idp="'+data[i].id+'" class="edit btn btn-warning btn-sm edit_data"><i class="fa fa-edit"></i></button> '+
+                                '<button type="button" idp="'+data[i].id+'" class="edit btn btn-danger btn-sm hapus_data" ><i class="fa fa-trash"></i></button>'+
                                 '</tr>';
                     }
                     $('#show_data').html(html);
-                    $('#dataTable').dataTable();
+                    $('#dataTable').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'csv', 'excel', 'pdf', 'print'
+                        ]
+                    });
                 }
             });
         }
@@ -198,7 +214,7 @@ function rupiah($angka){
             var namaPelanggan = $('#namaPelanggan').val();
             var daya = $('#daya').val();
             var jenis = $('#jenis').val();
-            console.log(idPelanggan + '|' + namaPelanggan+ '|' + daya+ '|' + jenis);
+            // console.log(idPelanggan + '|' + namaPelanggan+ '|' + daya+ '|' + jenis);
             $.ajax({
                 type : "POST",
                 url  : "<?php echo base_url('Customers/tambahBaru')?>",
@@ -209,8 +225,13 @@ function rupiah($angka){
                     $('[id="namaPelanggan"]').val("");
                     $('[id="daya"]').val("");
                     $('[id="jenis"]').val("");
-                    $('#exampleModal').modal('hide');
+                    $('#modalTambah').modal('hide');
                     showPelangganListrik();
+                    Swal.fire(
+                        'Yeay!',
+                        'Pelanggan baru berhasil ditambahkan!',
+                        'success'
+                    )
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
@@ -218,6 +239,35 @@ function rupiah($angka){
             });
             return false;
         });
+
+        $('#show_data').on('click','.hapus_data',function(){
+            var id = $(this).attr('idp');
+            $('#modalHapus').modal('show');
+            $('[name="delID"]').val(id);
+        });
+
+        $('#btn-hapus').on('click',function(){
+            var kode = $('#delIdPelanggan').val();
+            $.ajax({
+            type : "POST",
+            url  : "<?php echo base_url('Customers/hapusData')?>",
+            dataType : "JSON",
+            data : {kode: kode},
+            success: function(data){
+                    $('#modalHapus').modal('hide');
+                    showPelangganListrik();
+                    Swal.fire(
+                        'Yeay!',
+                        'Data pelanggan berhasil di hapus!',
+                        'success'
+                    )
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+            }
+            });
+            return false;
+		});
     });
 </script>
 

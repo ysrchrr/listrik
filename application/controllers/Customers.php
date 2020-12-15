@@ -19,15 +19,17 @@ class Customers extends CI_Controller{
     }
 
     public function tambahBaru(){
-        // $('[name="idPelanggan"]').val("");
-        // $('[name="namaPelanggan"]').val("");
-        // $('[name="daya"]').val("");
-        // $('[name="jenis"]').val("");
 		$idPelanggan = $this->input->post('idPelanggan');
 		$namaPelanggan = $this->input->post('namaPelanggan');
 		$daya = $this->input->post('daya');
 		$jenis = $this->input->post('jenis');
 		$data = $this->Customers_model->doneTambahBaru($idPelanggan, $namaPelanggan, $daya, $jenis);
 		echo json_encode($data);
+    }
+
+    public function hapusData(){
+        $id = $this->input->post('kode');
+        $data = $this->Customers_model->doneHapusData($id);
+        echo json_encode($data);
     }
 }

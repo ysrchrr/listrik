@@ -8,4 +8,9 @@ class Customers_model extends CI_Model{
         $query = $this->db->query("INSERT INTO pelanggan(`idPelanggan`, `namaPelanggan`, `daya`, `jenis`, `bulanIni`) VALUES('$idPelanggan', '$namaPelanggan', '$daya', '$jenis', '0')");
         return $query;
     }
+
+    function doneHapusData($id){
+		$hasil = $this->db->query("DELETE FROM pelanggan WHERE id='$id'");
+		return $hasil;
+	}
 }
