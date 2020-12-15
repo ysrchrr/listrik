@@ -158,6 +158,88 @@
     </div>
 </div>
 <!-- end modal hapus -->
+<!-- modal edit -->
+<div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditLabel">Ubah Data Pelanggan Baru</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body">
+        <form class="needs-validation" id="formEditPelanggan" novalidate>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <input type="hidden" name="editID" id="editIDPelanggan">
+                    <label for="validationCustom01">ID Pelanggan</label>
+                    <input type="text" class="form-control" placeholder="Ni wajib tau ni" id="idPelanggan_e" name="idPelanggan_e" autofocus required>
+                    <div class="valid-feedback">
+                        Siip
+                    </div>
+                    <div class="invalid-feedback">
+                        Diisi atuh beb
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom02">Nama Pelanggan</label>
+                    <input type="text" class="form-control" placeholder="Muhammad Sidharta Yohanes" id="namaPelanggan_e" name="namaPelanggan_e" required>
+                    <div class="valid-feedback">
+                        Namanya jelek yaa
+                    </div>
+                    <div class="invalid-feedback">
+                        Tenan waee
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom04">Jenis</label>
+                    <select class="custom-select" id="jenis_e" name="jenis_e" required>
+                        <option selected disabled value="">Silakan pilih satu</option>
+                        <option value="Listrik">Listrik</option>
+                        <option value="PDAM">PDAM</option>
+                        <option value="Indihome">Indihome</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Gagaga, pokoknya harus milih
+                    </div>
+                    <div class="valid-feedback">
+                        Pinterrr
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom03">Daya</label>
+                    <input type="text" class="form-control" placeholder="penting ni" id="daya_e" name="daya_e" onkeypress="buttonCan()" required>
+                    <div class="invalid-feedback">
+                        Kalo gatau bayar aja manual dulu, nanti di nota ada
+                    </div>
+                    <div class="valid-feedback">
+                        *___*
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                <label>Status bulan ini</label>
+                    <select class="custom-select" id="bulanIni" name="bulanIni" required>
+                        <option selected disabled value="">Silakan pilih satu</option>
+                        <option value="0">Belum bayar</option>
+                        <option value="1">Sudah bayar</option>
+                    </select>
+                </div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary" id="btn-update">Simpan perubahan</button>
+        </div>
+        </div>
+    </div>
+    </div>
+<!-- end modal edit -->
 <?php
 function rupiah($angka){
 	$hasil_rupiah = "Rp " . number_format($angka,2,',','.');
@@ -195,21 +277,22 @@ function rupiah($angka){
                                 '<td>'+data[i].daya+'</td>'+
                                 '<td>'+data[i].jenis+'</td>'+
                                 '<td>'+data[i].bulanIni+'</td>'+
-                                '<td align="center"> <button type="button" idp="'+data[i].id+'" class="edit btn btn-warning btn-sm edit_data"><i class="fa fa-edit"></i></button> '+
-                                '<button type="button" idp="'+data[i].id+'" class="edit btn btn-danger btn-sm hapus_data" ><i class="fa fa-trash"></i></button>'+
+                                '<td align="center"> <button type="button" idp="'+data[i].id+'" class="btn btn-warning btn-sm edit_data"><i class="fa fa-edit"></i></button> '+
+                                '<button type="button" idp="'+data[i].id+'" class="btn btn-danger btn-sm hapus_data" ><i class="fa fa-trash"></i></button>'+
                                 '</tr>';
                     }
                     $('#show_data').html(html);
                     $('#dataTable').DataTable({
                         dom: 'Bfrtip',
                         buttons: [
-                            'copy', 'csv', 'excel', 'pdf', 'print'
+                            'excel', 'pdf', 'print'
                         ]
                     });
                 }
             });
         }
         $('#btn-save').on('click',function(){
+            $('#dataTable').DataTable().destroy();
             var idPelanggan = $('#idPelanggan').val();
             var namaPelanggan = $('#namaPelanggan').val();
             var daya = $('#daya').val();
@@ -246,7 +329,31 @@ function rupiah($angka){
             $('[name="delID"]').val(id);
         });
 
+        $('#show_data').on('click','.edit_data',function(){
+            var id = $(this).attr('idp');
+            $.ajax({
+                type : "GET",
+                url  : "<?php echo base_url('Customers/detailPelanggan')?>",
+                dataType : "JSON",
+                data : {id:id},
+                success: function(data){
+                $.each(data,function(idPelanggan, namaPelanggan, daya, jenis){
+                    $('#modalEdit').modal('show');
+                    $('[id="idPelanggan_e"]').val(data.idPelanggan);
+                    $('[id="namaPelanggan_e"]').val(data.namaPelanggan);
+                    $('[id="daya_e"]').val(data.daya);
+                    $('[id="jenis_e"]').val(data.jenis);
+                    // $('[name="kobar_edit"]').val(data.barang_kode);
+                    // $('[name="nabar_edit"]').val(data.barang_nama);
+                    // $('[name="harga_edit"]').val(data.barang_harga);
+                });
+                }
+            });
+            return false;
+        });
+
         $('#btn-hapus').on('click',function(){
+            $('#dataTable').DataTable().destroy();
             var kode = $('#delIdPelanggan').val();
             $.ajax({
             type : "POST",
@@ -267,7 +374,41 @@ function rupiah($angka){
             }
             });
             return false;
-		});
+        });
+        
+        $('#btn-update').on('click', function(){
+            $('#dataTable').DataTable().destroy();
+            var idPelanggan = $('#idPelanggan_e').val();
+            var namaPelanggan = $('#namaPelanggan_e').val();
+            var daya = $('#daya_e').val();
+            var jenis = $('#jenis_e').val();
+            var bulanIni = $('#bulanIni').val();
+            console.log(idPelanggan, namaPelanggan, daya, jenis, bulanIni)
+            $.ajax({
+                type : "POST",
+                url  : "<?php echo base_url('Customers/updatePelanggan')?>",
+                dataType : "JSON",
+                data : {idPelanggan:idPelanggan , namaPelanggan:namaPelanggan, daya:daya, jenis:jenis, bulanIni:bulanIni},
+                success: function(data){
+                    $('[name="idPelanggan_e"]').val("");
+                    $('[name="namaPelanggan_e"]').val("");
+                    $('[name="daya_e"]').val("");
+                    $('[name="jenis_e"]').val("");
+                    $('[name="bulanIni"]').val("");
+                    $('#modalEdit').modal('hide');
+                    showPelangganListrik();
+                    Swal.fire(
+                        'Yeay!',
+                        'Pelanggan perubahan berhasil disimpan',
+                        'success'
+                    )
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                }
+            });
+            return false;
+        });
     });
 </script>
 

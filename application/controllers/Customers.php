@@ -32,4 +32,20 @@ class Customers extends CI_Controller{
         $data = $this->Customers_model->doneHapusData($id);
         echo json_encode($data);
     }
+
+    public function detailPelanggan(){
+		$idne = $this->input->get('id');
+		$data = $this->Customers_model->getDetailPelanggan($idne);
+		echo json_encode($data);
+    }
+
+    public function updatePelanggan(){
+		$idPelanggan = $this->input->post('idPelanggan_e');
+		$namaPelanggan = $this->input->post('namaPelanggan_e');
+		$daya = $this->input->post('daya_e');
+        $jenis = $this->input->post('jenis_e');
+        $bulanIni = $this->input->post('bulanIni');
+		$data=$this->Customers_model->startUpdatePelanggan($idPelanggan, $namaPelanggan, $daya, $jenis, $bulanIni);
+		echo json_encode($data);
+	}
 }
