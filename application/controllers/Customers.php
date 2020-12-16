@@ -49,12 +49,27 @@ class Customers extends CI_Controller
 
     public function updatePelanggan()
     {
-        $idPelanggan = $this->input->post('idPelanggan_e');
-        $namaPelanggan = $this->input->post('namaPelanggan_e');
-        $daya = $this->input->post('daya_e');
-        $jenis = $this->input->post('jenis_e');
+        $idPelanggan = $this->input->post('idPelanggan');
+        $namaPelanggan = $this->input->post('namaPelanggan');
+        $daya = $this->input->post('daya');
+        $jenis = $this->input->post('jenis');
         $bulanIni = $this->input->post('bulanIni');
-        $data = $this->Customers_model->startUpdatePelanggan($idPelanggan, $namaPelanggan, $daya, $jenis, $bulanIni);
+        // $data = $this->Customers_model->startUpdatePelanggan($idPelanggan, $namaPelanggan, $daya, $jenis, $bulanIni);
+
+        $data_1 = array(
+            'namaPelanggan' => $namaPelanggan,
+            'daya' => $daya,
+            'jenis' => $jenis,
+            'bulanIni' => $bulanIni
+        );
+
+        $this->db->where('idPelanggan', $idPelanggan);
+        $this->db->update('pelanggan', $data_1);
+
+        $data = array(
+            'sukses' => 'sukses'
+        );
+
         echo json_encode($data);
     }
 }
