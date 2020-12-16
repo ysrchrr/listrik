@@ -17,4 +17,10 @@ class Rekap extends CI_Controller{
         $tampilPelanggan = $this->Rekap_model->tampilkanSemua();
         echo json_encode($tampilPelanggan);
       }
+
+      public function getData(){
+        $id = $this->input->post('id');
+        $data = $this->Rekap_model->goGetData($id)->result();
+        echo json_encode($data);
+      }
 }

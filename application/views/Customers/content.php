@@ -88,7 +88,7 @@
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
                             <label for="validationCustom01">ID Pelanggan</label>
-                            <input type="text" class="form-control" placeholder="Ni wajib tau ni" id="idPelanggan" name="idPelanggan" autofocus required>
+                            <input type="text" class="form-control" placeholder="520512345678" id="idPelanggan" name="idPelanggan" autofocus required>
                             <div class="valid-feedback">
                                 Siip
                             </div>
@@ -98,7 +98,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="validationCustom02">Nama Pelanggan</label>
-                            <input type="text" class="form-control" placeholder="Uvuwevwevwe Osas" id="namaPelanggan" name="namaPelanggan" required>
+                            <input type="text" class="form-control" placeholder="Aerozeppelin" id="namaPelanggan" name="namaPelanggan" required>
                             <div class="valid-feedback">
                                 Namanya jelek yaa
                             </div>
@@ -112,9 +112,9 @@
                             <label for="validationCustom04">Jenis</label>
                             <select class="custom-select" id="jenis" name="jenis" required>
                                 <option selected disabled value="">Silakan pilih satu</option>
-                                <option>Listrik</option>
-                                <option>PDAM</option>
-                                <option>Indohome</option>
+                                <option value="Listrik">Listrik</option>
+                                <option value="PDAM">PDAM</option>
+                                <option value="Indihome">Indihome</option>
                             </select>
                             <div class="invalid-feedback">
                                 Gagaga, pokoknya harus milih
@@ -125,7 +125,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="validationCustom03">Daya</label>
-                            <input type="text" class="form-control" placeholder="penting ni" id="daya" name="daya" onkeypress="buttonCan()" required>
+                            <input type="text" class="form-control" placeholder="(250VA - 636.000VA) atau -" id="daya" name="daya" onkeypress="buttonCan()" required>
                             <div class="invalid-feedback">
                                 Kalo gatau bayar aja manual dulu, nanti di nota ada
                             </div>
@@ -259,6 +259,45 @@ function rupiah($angka)
     function buttonCan() {
         $('#btn-save').removeAttr('disabled');
     }
+    function showPelangganListrik() {
+            $.ajax({
+                type: 'GET',
+                url: '<?php echo base_url() ?>Customers/showPelanggan',
+                async: true,
+                dataType: 'json',
+                success: function(data) {
+                    var html = '';
+                    var i;
+                    for (i = 0; i < data.length; i++) {
+                        var ket = data[i].bulanIni
+                        if(ket == 0){
+                            var keterangan = "Belum membayar"
+                        } else{
+                            var keterangan = "Sudah membayar"
+                        }
+                        html += '<tr>' +
+                            '<td>' + data[i].idPelanggan + '</td>' +
+                            '<td>' + data[i].namaPelanggan + '</td>' +
+                            // '<td>'+<?php //echo rupiah(data[i].keTokped)
+                                        ?>+'</td>'+
+                            '<td>' + data[i].daya + '</td>' +
+                            '<td>' + data[i].jenis + '</td>' +
+                            '<td>' + keterangan + '</td>' +
+                            '<td align="center"> <button type="button" idp="' + data[i].id + '" class="btn btn-warning btn-sm edit_data"><i class="fa fa-edit"></i></button> ' +
+                            '<button type="button" idp="' + data[i].id + '" class="btn btn-danger btn-sm hapus_data" ><i class="fa fa-trash"></i></button>' +
+                            '</tr>';
+                    }
+                    $('#show_data').html(html);
+                    $('#dataTable').DataTable();
+                    // $('#dataTable').DataTable({
+                    //     dom: 'Bfrtip',
+                    //     buttons: [
+                    //         'excel', 'pdf', 'print'
+                    //     ]
+                    // });
+                }
+            });
+        }
     $(document).ready(function() {
         // alert(convertToRupiah(0));
         function convertToRupiah(angka) {
@@ -269,39 +308,7 @@ function rupiah($angka)
             return 'Rp. ' + rupiah.split('', rupiah.length - 1).reverse().join('');
         }
         showPelangganListrik(); //pemanggilan fungsi tampil barang.            
-        //fungsi tampil barang
-        function showPelangganListrik() {
-            $.ajax({
-                type: 'GET',
-                url: '<?php echo base_url() ?>Customers/showPelanggan',
-                async: true,
-                dataType: 'json',
-                success: function(data) {
-                    var html = '';
-                    var i;
-                    for (i = 0; i < data.length; i++) {
-                        html += '<tr>' +
-                            '<td>' + data[i].idPelanggan + '</td>' +
-                            '<td>' + data[i].namaPelanggan + '</td>' +
-                            // '<td>'+<?php //echo rupiah(data[i].keTokped)
-                                        ?>+'</td>'+
-                            '<td>' + data[i].daya + '</td>' +
-                            '<td>' + data[i].jenis + '</td>' +
-                            '<td>' + data[i].bulanIni + '</td>' +
-                            '<td align="center"> <button type="button" idp="' + data[i].id + '" class="btn btn-warning btn-sm edit_data"><i class="fa fa-edit"></i></button> ' +
-                            '<button type="button" idp="' + data[i].id + '" class="btn btn-danger btn-sm hapus_data" ><i class="fa fa-trash"></i></button>' +
-                            '</tr>';
-                    }
-                    $('#show_data').html(html);
-                    $('#dataTable').DataTable({
-                        // dom: 'Bfrtip',
-                        // buttons: [
-                        //     'excel', 'pdf', 'print'
-                        // ]
-                    });
-                }
-            });
-        }
+        
         $('#btn-save').on('click', function() {
             $('#dataTable').DataTable().destroy();
             var idPelanggan = $('#idPelanggan').val();
