@@ -283,10 +283,10 @@ function rupiah($angka){
                     }
                     $('#show_data').html(html);
                     $('#dataTable').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'excel', 'pdf', 'print'
-                        ]
+                        // dom: 'Bfrtip',
+                        // buttons: [
+                        //     'excel', 'pdf', 'print'
+                        // ]
                     });
                 }
             });
@@ -337,15 +337,12 @@ function rupiah($angka){
                 dataType : "JSON",
                 data : {id:id},
                 success: function(data){
-                $.each(data,function(idPelanggan, namaPelanggan, daya, jenis){
+                $.each(data, function(idPelanggan, namaPelanggan, daya, jenis){
                     $('#modalEdit').modal('show');
                     $('[id="idPelanggan_e"]').val(data.idPelanggan);
                     $('[id="namaPelanggan_e"]').val(data.namaPelanggan);
                     $('[id="daya_e"]').val(data.daya);
                     $('[id="jenis_e"]').val(data.jenis);
-                    // $('[name="kobar_edit"]').val(data.barang_kode);
-                    // $('[name="nabar_edit"]').val(data.barang_nama);
-                    // $('[name="harga_edit"]').val(data.barang_harga);
                 });
                 }
             });

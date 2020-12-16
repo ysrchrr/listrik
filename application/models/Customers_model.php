@@ -31,21 +31,21 @@ class Customers_model extends CI_Model{
     }
 
     public function startUpdatePelanggan($idPelanggan, $namaPelanggan, $daya, $jenis, $bulanIni){
-        $data = [
-            'namaPelanggan' => $namaPelanggan,
-            'daya' => $daya,
-            'jenis' => $jenis,
-            'bulanIni' => $bulanIni
-        ];
-        $this->db->where('idPelanggan', $idPelanggan);
-        return $this->db->update('pelanggan', $data);
+        // $data = [
+        //     'namaPelanggan' => $namaPelanggan,
+        //     'daya' => $daya,
+        //     'jenis' => $jenis,
+        //     'bulanIni' => $bulanIni
+        // ];
+        // $this->db->where('idPelanggan', $idPelanggan);
+        // return $this->db->update('pelanggan', $data);
 
-        // $hasil=$this->db->query("UPDATE `listrik`.`pelanggan` SET 
-        //                             `namaPelanggan` = '$namaPelanggan', 
-        //                             `daya` = '$daya', 
-        //                             `jenis` = '$jenis', 
-        //                             `bulanIni` = $bulanIni
-        //                             WHERE `idPelanggan` = '$idPelanggan'");
-		// return $hasil;
+        $hasil=$this->db->query("UPDATE `listrik`.`pelanggan` SET 
+                                    `namaPelanggan` = '$namaPelanggan', 
+                                    `daya` = '$daya', 
+                                    `jenis` = '$jenis', 
+                                    `bulanIni` = $bulanIni
+                                    WHERE `idPelanggan` = '$idPelanggan'");
+		return $hasil;
     }
 }
