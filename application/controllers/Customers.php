@@ -65,6 +65,7 @@ class Customers extends CI_Controller
 
         $this->db->where('idPelanggan', $idPelanggan);
         $this->db->update('pelanggan', $data_1);
+        //
 
         $data = array(
             'sukses' => 'sukses'
