@@ -18,7 +18,7 @@ class Customers_model extends CI_Model{
         $hsl = $this->db->query("SELECT * FROM pelanggan WHERE id='$idne'");
 		if($hsl->num_rows()>0){
 			foreach ($hsl->result() as $data) {
-				$hasil=array(
+				$hasil = array(
 					'id' => $data->id,
 					'idPelanggan' => $data->idPelanggan,
 					'namaPelanggan' => $data->namaPelanggan,

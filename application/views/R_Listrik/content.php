@@ -23,7 +23,7 @@
                                 $namaP = $this->db->query("SELECT * FROM pelanggan WHERE jenis = 'Listrik' ORDER BY namaPelanggan");
                                 ?>
                                 <select class="custom-select" id="ValidasiNama" aria-describedby="ValidasiNamaFeedback" required>
-                                    <option selected disabled value="">Silakan pilih salah satu</option>
+                                    <option value="">Silakan pilih salah satu</option>
                                     <?php 
                                     foreach($namaP->result() as $nama) : ?>
                                     <option value="<?php echo $nama->idPelanggan?>"><?php echo $nama->namaPelanggan; ?></option>
@@ -55,7 +55,7 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="tokopedia">Uang ke Tokopedia</label>
-                                <input type="text" class="form-control" id="tokopedia" name="tokped" required>
+                                <input type="text" class="form-control" id="tokopedia" name="tokped" placeholder=" Rp. XXX.XXX" onkeypress="javascript:return isNumber(event) && buttonCan()" maxlength="8" required>
                                 <div class="valid-feedback">
                                     Wahh:(
                                 </div>
@@ -64,13 +64,13 @@
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="persons">Uang masuk Person's</label>
-                                <input type="text" class="form-control" id="persons" value="3000" placeholder="I luv u 3000" name="person" required>
+                                <input type="text" class="form-control" id="persons" value="3000" placeholder="I luv u 3000" name="person" onkeypress="javascript:return isNumber(event)" maxlength="8" required>
                                 <div class="valid-feedback">
                                     Cpat bersyukur!
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-primary" type="submit" style="width: 100%" name="submit">Tambah tagihan</button>
+                        <button class="btn btn-primary" type="button" id="btn-save" style="width: 100%" disabled="true">Tambah tagihan</button>
                     </form>
                 </div>
             </div>
@@ -111,6 +111,16 @@
 <!-- /.container-fluid -->
 
 </div>
+<script>
+    // WRITE THE VALIDATION SCRIPT.
+    function isNumber(evt) {
+        var iKeyCode = (evt.which) ? evt.which : evt.keyCode
+        if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
+            return false;
+
+        return true;
+    }    
+</script>
 <!-- End of Main Content -->
 <?php
 function rupiah($angka){
@@ -120,6 +130,13 @@ function rupiah($angka){
 ?>
 <script type="text/javascript">
     var loading = $('#loadingajax');
+    var iTokped = $('#tokopedia');
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + dd;
+    // alert(today);
     function convertToRupiah(angka){
         var rupiah = '';		
         var angkarev = angka.toString().split('').reverse().join('');
@@ -137,7 +154,7 @@ function rupiah($angka){
                 var i;
                 for(i=0; i<data.length; i++){
                     html += '<tr>'+
-                            '<td>'+data[i].idPelanggan+'</td>'+
+                            '<td>'+data[i].namaPelanggan+'</td>'+
                             '<td>'+data[i].tanggal+'</td>'+
                             // '<td>'+<?php //echo rupiah(data[i].keTokped)?>+'</td>'+
                             '<td>'+convertToRupiah(data[i].keTokped)+'</td>'+
@@ -146,7 +163,15 @@ function rupiah($angka){
                             '</tr>';
                 }
                 $('#show_data').html(html);
-                $('#dataTable').dataTable();
+                $('#dataTable').dataTable({
+                    "language" : {
+                        "emptyTable" : "Belum ada data:(",
+                        "zeroRecords" : "Tidak ada yang cocok dengan database kami"
+                    }
+                });
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
             },
             complete: function(){
                 loading.hide();
@@ -162,22 +187,59 @@ function rupiah($angka){
             var id = $(this).val();
             //alert(id);
             $.ajax({
+                type: "GET",
+                url: "<?php echo base_url('Rekap/getData') ?>",
+                dataType: "JSON",
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    $.each(data, function(idPelanggan, namaPelanggan, daya, jenis) {
+                        $('[id="idPelanggan"]').val(data.idPelanggan);
+                        $('[id="daya"]').val(data.daya);
+                    });
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                }
+            });
+            return false;
+        });
+
+        $('#btn-save').on('click', function() {
+            $('#dataTable').DataTable().destroy();
+            // alert('a');
+            var idPelanggan = $('#idPelanggan').val();
+            var tanggal = today;
+            var keTokped = $('#tokopedia').val();
+            var kePerson = $('#persons').val();
+            var status = 0;
+            var hasilNama = $('#ValidasiNama').find(":selected").text();
+            // alert(idPelanggan + tanggal +keTokped + kePerson + status);
+            // console.log(idPelanggan + '|' + namaPelanggan+ '|' + daya+ '|' + jenis);
+            $.ajax({
                 type: "POST",
-                url: "<?php echo base_url();?>Rekap/getData",
-                data: {id:id},
-                async: true,
-                dataType: "json",
-                success: function (data) {
-                    // alert('asd');
-                    var i;
-                    for(i=0; i<data.length; i++){
-                        // alert(data[i].daya);
-                        // html += data[i].idPelanggan
-                        // sdaya += data[i].daya
-                        console.log(data[i].idPelanggan);
-                        $('input[name=idPelanggan]').val(data[i].idPelanggan);
-                        $('#daya').val(data[i].daya);
-                    }
+                url: "<?php echo base_url('Rekap/addTagihan') ?>",
+                dataType: "JSON",
+                data: {
+                    idPelanggan: idPelanggan,
+                    tanggal: tanggal,
+                    keTokped: keTokped,
+                    kePerson: kePerson,
+                    status: status
+                },
+                success: function(data) {
+                    $('[id="ValidasiNama"]').val("");
+                    $('[id="idPelanggan"]').val("");
+                    $('[id="daya"]').val("");
+                    $('[id="tokopedia"]').val("");
+                    $('[id="persons"]').val("");
+                    showPelangganListrik();
+                    Swal.fire(
+                        'Yeay!',
+                        'Tagihan ke ' +hasilNama+ ' telah ditambahkan!',
+                        'success'
+                    )
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);

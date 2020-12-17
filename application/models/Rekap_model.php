@@ -1,14 +1,22 @@
 <?php
 class Rekap_model extends CI_Model{
     public function tampilkanSemua(){
-        return $this->db->get('pembayaran')->result();
+        $tampil =  $this->db->query('SELECT
+										pelanggan.namaPelanggan,
+										pembayaran.tanggal,
+										pembayaran.keTokped,
+										pembayaran.kePerson
+									FROM
+										pembayaran
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan');
+		return $tampil->result();
     }
 
     public function goGetData($id){
-        $hsl = $this->db->query("SELECT * FROM pelanggan WHERE id='$id'");
-        if($hsl->num_rows()>0){
+        $hsl = $this->db->query("SELECT * FROM pelanggan WHERE idPelanggan = '$id'");
+		if($hsl->num_rows()>0){
 			foreach ($hsl->result() as $data) {
-				$hasil=array(
+				$hasil = array(
 					'id' => $data->id,
 					'idPelanggan' => $data->idPelanggan,
 					'namaPelanggan' => $data->namaPelanggan,
@@ -18,5 +26,10 @@ class Rekap_model extends CI_Model{
 			}
 		}
 		return $hasil;
-    }
+	}
+	
+	public function goAddTagihan($idPelanggan, $tanggal, $keTokped, $kePerson, $status){
+		$query = $this->db->query("INSERT INTO `persons`.`pembayaran`(`idPelanggan`, `tanggal`, `keTokped`, `kePerson`, `status`) VALUES ('$idPelanggan', '$tanggal', '$keTokped', '$kePerson', '$status')");
+        return $query;
+	}
 }

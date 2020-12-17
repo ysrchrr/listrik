@@ -256,7 +256,7 @@ function rupiah($angka)
 }
 ?>
 <script type="text/javascript">
-    function buttonCan() {
+    function buttonCan(){
         $('#btn-save').removeAttr('disabled');
     }
     function showPelangganListrik() {

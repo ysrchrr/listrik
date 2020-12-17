@@ -19,8 +19,23 @@ class Rekap extends CI_Controller{
       }
 
       public function getData(){
-        $id = $this->input->post('id');
-        $data = $this->Rekap_model->goGetData($id)->result();
+        $id = $this->input->get('id');
+        $data = $this->Rekap_model->goGetData($id);
+        echo json_encode($data);
+      }
+
+      public function addTagihan(){
+        // $('[id="ValidasiNama"]').val("");
+        // $('[id="idPelanggan"]').val("");
+        // $('[id="daya"]').val("");
+        // $('[id="tokopedia"]').val("");
+        // $('[id="persons"]').val("");
+        $idPelanggan = $this->input->post('idPelanggan');
+        $tanggal = $this->input->post('tanggal');
+        $keTokped = $this->input->post('keTokped');
+        $kePerson = $this->input->post('kePerson');
+        $status = $this->input->post('status');
+        $data = $this->Rekap_model->goAddTagihan($idPelanggan, $tanggal, $keTokped, $kePerson, $status);
         echo json_encode($data);
       }
 }
