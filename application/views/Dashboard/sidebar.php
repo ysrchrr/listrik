@@ -93,8 +93,8 @@
                 <div id="headingUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tampilan laporan:</h6>
-                        <a class="collapse-item" href="buttons.html">Laporan Bulanan</a>
-                        <a class="collapse-item" href="cards.html">Semua Laporan</a>
+                        <a class="collapse-item" href="<?php echo base_url();?>Rekap/rekapBulanan">Laporan Bulanan</a>
+                        <a class="collapse-item" href="<?php echo base_url();?>Rekap/rekapKeseluruhan">Semua Laporan</a>
                     </div>
                 </div>
             </li>
