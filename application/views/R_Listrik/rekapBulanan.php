@@ -9,49 +9,61 @@
     <!-- Content Row -->
     <div class="row">
         <!-- kiri -->
-        <div class="col-lg-4 mb-4">
+        <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Silakan pilih mau yang mana hehe</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Silakan pilih waktu untuk ditampilkan</h6>
                 </div>
                 <div class="card-body">
                     <form>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <?php 
-                                $namaP = $this->db->query("SELECT * FROM pelanggan WHERE jenis = 'Listrik' ORDER BY namaPelanggan");
-                                ?>
-                                <label for="ValidasiNama">Nama Pelanggan</label>
-                                <select class="custom-select" id="ValidasiNama" aria-describedby="ValidasiNamaFeedback" required>
-                                    <option value="">Silakan pilih salah satu</option>
+                                <label for="ValidasiNama">Bulan</label>
+                                <select id="bulan" name="bulan" class="custom-select">
+                                    <option value="">Silakan pilih bulan</option>
+                                    <option value="01">Januari</option>
+                                    <option value="02">Februari</option>
+                                    <option value="03">Maret</option>
+                                    <option value="04">April</option>
+                                    <option value="05">Mei</option>
+                                    <option value="06">Juni</option>
+                                    <option value="07">Juli</option>
+                                    <option value="08">Agustus</option>
+                                    <option value="09">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
                                 </select>
-                                <div id="ValidasiNamaFeedback" class="invalid-feedback">
-                                    Kamu belum milih lho:(
-                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label>Bulan</label>
+                                <select class="custom-select" id="tahun" name="tahun">
+                                    <option value="">Silakan pilih tahun</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                </select>
                             </div>
                         </div>
-                        
-                        <button class="btn btn-primary" type="button" id="btn-save" style="width: 100%" disabled="true">Tambah tagihan</button>
                     </form>
                 </div>
             </div>
         </div>
         <!-- kanan -->
-        <div class="col-lg-8 mb-4">
+        <div class="col-lg-12 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Rekapan akhir-akhir ini</h6>
+                    <h6 class="m-0 font-weight-bold text-primary infoslur">Data rekapan</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th style="vertical-align: center">Nama</th>
-                                <th style="vertical-align: center">Bulan</th>
-                                <th style="vertical-align: center">Tokopedia</th>
-                                <th>Person's</th>
-                                <th style="text-align: right; vertical-align: center">Actions</th>
+                                <th style="vertical-align: center">ID Pelanggan</th>
+                                <th style="vertical-align: center">Nama Pelanggan</th>
+                                <th style="vertical-align: center">Daya</th>
+                                <th style="vertical-align: center">Periode</th>
+                                <th style="vertical-align: center">Jumlah keluar</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">
@@ -60,7 +72,7 @@
                     </div>
                     <div align="center">
                         <div id='loadingajax'>
-                            <img alt='loading...' src='<?php echo base_url()?>assets/img/ajax-loading-gif.gif' />
+                            <img alt='loading...' src='<?php echo base_url()?>assets/img/ajax-loading-gif.gif' style="display: none;"/>
                         </div>
                     </div>
                 </div>
@@ -72,16 +84,6 @@
 <!-- /.container-fluid -->
 
 </div>
-<script>
-    // WRITE THE VALIDATION SCRIPT.
-    function isNumber(evt) {
-        var iKeyCode = (evt.which) ? evt.which : evt.keyCode
-        if (iKeyCode != 46 && iKeyCode > 31 && (iKeyCode < 48 || iKeyCode > 57))
-            return false;
-
-        return true;
-    }    
-</script>
 <!-- End of Main Content -->
 <?php
 function rupiah($angka){
@@ -90,123 +92,106 @@ function rupiah($angka){
 }
 ?>
 <script type="text/javascript">
-    var loading = $('#loadingajax');
-    var iTokped = $('#tokopedia');
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today = yyyy + '-' + mm + '-' + dd;
-    // alert(today);
+    
     function convertToRupiah(angka){
         var rupiah = '';		
         var angkarev = angka.toString().split('').reverse().join('');
         for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
         return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
     }
-    function showPelangganListrik(){
-        $.ajax({
-            type  : 'GET',
-            url   : '<?php echo base_url()?>Rekap/showListrik',
-            async : true,
-            dataType : 'json',
-            success : function(data){
-                var html = '';
-                var i;
-                for(i=0; i<data.length; i++){
-                    html += '<tr>'+
-                            '<td>'+data[i].namaPelanggan+'</td>'+
-                            '<td>'+data[i].tanggal+'</td>'+
-                            // '<td>'+<?php //echo rupiah(data[i].keTokped)?>+'</td>'+
-                            '<td>'+convertToRupiah(data[i].keTokped)+'</td>'+
-                            '<td>'+convertToRupiah(data[i].kePerson)+'</td>'+
-                            '<td align="center"> <button type="button" nim="'+data[i].id+'" class="edit btn btn-warning btn-sm"><i class="fa fa-edit"></i></button>'+
-                            '</tr>';
-                }
-                $('#show_data').html(html);
-                $('#dataTable').dataTable({
-                    "language" : {
-                        "emptyTable" : "Belum ada data:(",
-                        "zeroRecords" : "Tidak ada yang cocok dengan database kami"
+
+    $(document).ready(function(){
+        var iBulan = $('#bulan');
+        var iTahun = $('#tahun');
+        
+        if(iBulan.val() == '' && iTahun.val() == ''){
+            $('#show_data').html('<br/>Eitts, kamu belum milih bulan dan tahun:)');
+        }
+
+        iTahun.change(function(){
+            $('#dataTable').DataTable().destroy();
+            tahun = $(this).val();
+            bulan = iBulan.val();
+            dadine = tahun+'-'+bulan
+            if(iBulan.val() == ''){
+                alert("Bulan harus diisi");
+            } else {
+                $.ajax({
+                    type  : 'POST',
+                    url   : '<?php echo base_url()?>Rekap/getRekapBulanan',
+                    async : true,
+                    dataType : 'json',
+                    data: {ngene: dadine},
+                    success : function(data){
+                        var html = '';
+                        var i;
+                        for(i=0; i<data.length; i++){
+                            html += '<tr>'+
+                                    '<td>'+data[i].idPelanggan+'</td>'+
+                                    '<td>'+data[i].namaPelanggan+'</td>'+
+                                    '<td>'+data[i].daya+'</td>'+
+                                    '<td>'+data[i].tanggal+'</td>'+
+                                    '<td>'+convertToRupiah(data[i].UangKeluar)+'</td>'+
+                                    '</tr>';
+                        }
+                        $('#show_data').html(html);
+                        $('#dataTable').dataTable({
+                            dom: 'Bfrtip',
+                                buttons: [
+                                    'excel', 'pdf', 'print'
+                                ],
+                            "language" : {
+                                "emptyTable" : "Belum ada data:(",
+                                "zeroRecords" : "Tidak ada yang cocok dengan database kami"
+                            }
+                        });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError){
+                            console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
                     }
                 });
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                    console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
-            },
-            complete: function(){
-                loading.hide();
             }
         });
-    }
-    $(document).ready(function(){
-        // alert(convertToRupiah(0));
-        var iNama = $('#ValidasiNama');
-        showPelangganListrik();	//pemanggilan fungsi tampil barang.            
-        
-        iNama.change(function(){
-            var id = $(this).val();
-            //alert(id);
-            $.ajax({
-                type: "GET",
-                url: "<?php echo base_url('Rekap/getData') ?>",
-                dataType: "JSON",
-                data: {
-                    id: id
-                },
-                success: function(data) {
-                    $.each(data, function(idPelanggan, namaPelanggan, daya, jenis) {
-                        $('[id="idPelanggan"]').val(data.idPelanggan);
-                        $('[id="daya"]').val(data.daya);
-                    });
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
-                }
-            });
-            return false;
-        });
 
-        $('#btn-save').on('click', function() {
+        iBulan.change(function(){
             $('#dataTable').DataTable().destroy();
-            // alert('a');
-            var idPelanggan = $('#idPelanggan').val();
-            var tanggal = today;
-            var keTokped = $('#tokopedia').val();
-            var kePerson = $('#persons').val();
-            var status = 0;
-            var hasilNama = $('#ValidasiNama').find(":selected").text();
-            // alert(idPelanggan + tanggal +keTokped + kePerson + status);
-            // console.log(idPelanggan + '|' + namaPelanggan+ '|' + daya+ '|' + jenis);
+            bulan = $(this).val();
+            tahun = iTahun.val();
+            dadine = tahun+'-'+bulan
             $.ajax({
-                type: "POST",
-                url: "<?php echo base_url('Rekap/addTagihan') ?>",
-                dataType: "JSON",
-                data: {
-                    idPelanggan: idPelanggan,
-                    tanggal: tanggal,
-                    keTokped: keTokped,
-                    kePerson: kePerson,
-                    status: status
+                type  : 'POST',
+                url   : '<?php echo base_url()?>Rekap/getRekapBulanan',
+                async : true,
+                dataType : 'json',
+                data: {ngene: dadine},
+                success : function(data){
+                    var html = '';
+                    var i;
+                    for(i=0; i<data.length; i++){
+                        html += '<tr>'+
+                                '<td>'+data[i].idPelanggan+'</td>'+
+                                '<td>'+data[i].namaPelanggan+'</td>'+
+                                '<td>'+data[i].daya+'</td>'+
+                                '<td>'+data[i].tanggal+'</td>'+
+                                '<td>'+convertToRupiah(data[i].UangKeluar)+'</td>'+
+                                '</tr>';
+                    }
+                    $('#show_data').html(html);
+                    $('#dataTable').dataTable({
+                            dom: 'Bfrtip',
+                                buttons: [
+                                    'excel', 'pdf', 'print'
+                                ],
+                            "language" : {
+                                "emptyTable" : "Belum ada data:(",
+                                "zeroRecords" : "Tidak ada yang cocok dengan database kami"
+                            }
+                        });
                 },
-                success: function(data) {
-                    $('[id="ValidasiNama"]').val("");
-                    $('[id="idPelanggan"]').val("");
-                    $('[id="daya"]').val("");
-                    $('[id="tokopedia"]').val("");
-                    $('[id="persons"]').val("");
-                    showPelangganListrik();
-                    Swal.fire(
-                        'Yeay!',
-                        'Tagihan ke ' +hasilNama+ ' telah ditambahkan!',
-                        'success'
-                    )
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                error: function(xhr, ajaxOptions, thrownError){
+                        console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
                 }
             });
-            return false;
         });
     });
 </script>

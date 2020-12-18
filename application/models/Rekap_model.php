@@ -32,4 +32,19 @@ class Rekap_model extends CI_Model{
 		$query = $this->db->query("INSERT INTO `persons`.`pembayaran`(`idPelanggan`, `tanggal`, `keTokped`, `kePerson`, `status`) VALUES ('$idPelanggan', '$tanggal', '$keTokped', '$kePerson', '$status')");
         return $query;
 	}
+
+	public function dataBulanan($ngene){
+		$query = $this->db->query("SELECT
+									pembayaran.idPelanggan,
+									pelanggan.namaPelanggan,
+									pelanggan.daya,
+									pembayaran.tanggal,
+									pembayaran.keTokped AS UangKeluar 
+								FROM
+									`pembayaran`
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan 
+								WHERE
+									tanggal LIKE '%$ngene%'");
+		return $query->result();
+	}
 }

@@ -21,11 +21,17 @@ class Rekap extends CI_Controller{
       $this->load->view('Dashboard/footer');
     }
 
+    public function getRekapBulanan(){
+      $ngene = $this->input->post('ngene');
+      $data = $this->Rekap_model->dataBulanan($ngene);
+      echo json_encode($data);
+    }
+
     public function rekapKeseluruhan(){
       $judul['title'] = "Rekap Bulanan";
       $this->load->view('Dashboard/sidebar', $judul);
       $this->load->view('Dashboard/topbar');
-      $this->load->view('R_Listrik/content');
+      $this->load->view('R_Listrik/rekapKeseluruhan');
       $this->load->view('Dashboard/footer');
     }
       
@@ -41,11 +47,6 @@ class Rekap extends CI_Controller{
     }
 
     public function addTagihan(){
-      // $('[id="ValidasiNama"]').val("");
-      // $('[id="idPelanggan"]').val("");
-      // $('[id="daya"]').val("");
-      // $('[id="tokopedia"]').val("");
-      // $('[id="persons"]').val("");
       $idPelanggan = $this->input->post('idPelanggan');
       $tanggal = $this->input->post('tanggal');
       $keTokped = $this->input->post('keTokped');
