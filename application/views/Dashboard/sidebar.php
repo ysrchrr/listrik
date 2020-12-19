@@ -17,6 +17,7 @@
     <link href="<?php echo base_url(); ?>assets/img/logo.png" rel="icon">
     <!-- Custom styles for this template-->
     <link href="<?php echo base_url(); ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
     <link href="<?php echo base_url(); ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
@@ -85,7 +86,7 @@
             </div>
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url(); ?>assets/index.html">
+                <a class="nav-link" href="<?php echo base_url(); ?>Rekap/umum">
                     <i class="fa fa-clock"></i>
                     <span>Laporan Bulanan</span></a>
             </li>
@@ -111,7 +112,7 @@
                     <span>Rekapan Indihome</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url(); ?>assets/index.html">
+                <a class="nav-link" href="<?php echo base_url(); ?>Rekap/rekapPDAM">
                     <i class="fas fa-fw fa-water"></i>
                     <span>Rekapan Air</span></a>
             </li>

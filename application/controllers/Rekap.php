@@ -6,11 +6,15 @@ class Rekap extends CI_Controller{
     }
     
     public function listrik(){
-        $judul['title'] = "Rekap Listrik";
-        $this->load->view('Dashboard/sidebar', $judul);
-        $this->load->view('Dashboard/topbar');
-        $this->load->view('R_Listrik/content');
-        $this->load->view('Dashboard/footer');
+      $judul = array(
+        'title'=> "Rekap Listrik",
+        'status' => "active",
+        'col' => "collapsed"
+      );
+      $this->load->view('Dashboard/sidebar', $judul);
+      $this->load->view('Dashboard/topbar');
+      $this->load->view('R_Listrik/content');
+      $this->load->view('Dashboard/footer');
     }
 
     public function rekapBulanan(){
@@ -25,6 +29,13 @@ class Rekap extends CI_Controller{
       $ngene = $this->input->post('ngene');
       $data = $this->Rekap_model->dataBulanan($ngene);
       echo json_encode($data);
+    }
+
+    
+    public function allRecord(){
+      $ngene = $this->input->post('ngene');
+      $tampilPelanggan = $this->Rekap_model->allRecords($ngene);
+      echo json_encode($tampilPelanggan);
     }
 
     public function rekapKeseluruhan(){
@@ -47,6 +58,11 @@ class Rekap extends CI_Controller{
 
     public function showIndihome(){
       $tampilPelanggan = $this->Rekap_model->tampilkanIndihome();
+      echo json_encode($tampilPelanggan);
+    }
+
+    public function showPDAM(){
+      $tampilPelanggan = $this->Rekap_model->tampilkanPDAM();
       echo json_encode($tampilPelanggan);
     }
 
@@ -93,5 +109,35 @@ class Rekap extends CI_Controller{
       $this->load->view('Dashboard/topbar');
       $this->load->view('R_PDAM/content');
       $this->load->view('Dashboard/footer');
+    }
+
+    public function getRekapPDAM(){
+      $tampilPelanggan = $this->Rekap_model->allPDAM();
+      echo json_encode($tampilPelanggan);
+    }
+
+    public function rekapPDAM(){
+      $judul = array(
+        'title'=> "Rekap PDAM",
+        'status' => "dqd"
+      );
+      $this->load->view('Dashboard/sidebar', $judul);
+      $this->load->view('Dashboard/topbar');
+      $this->load->view('R_PDAM/rekapPDAM');
+      $this->load->view('Dashboard/footer');
+    }
+
+    public function umum(){
+      $judul['title'] = "Seluruh Rekapan Bulanan";
+      $this->load->view('Dashboard/sidebar', $judul);
+      $this->load->view('Dashboard/topbar');
+      $this->load->view('rekapumum');
+      $this->load->view('Dashboard/footer');
+    }
+
+    public function getSummary(){
+      $tgl = $this->input->post('ngene');
+      $tampilPelanggan = $this->Rekap_model->lsummary($tgl);
+      echo json_encode($tampilPelanggan);
     }
 }

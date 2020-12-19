@@ -3,7 +3,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Rekap DPAM</h1>
+        <h1 class="h3 mb-0 text-gray-800">Rekap PDAM</h1>
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
     </div>
     <!-- Content Row -->
@@ -165,7 +165,7 @@ function rupiah($angka){
     function showPelangganIndihome(){
         $.ajax({
             type  : 'GET',
-            url   : '<?php echo base_url()?>Rekap/showIndihome',
+            url   : '<?php echo base_url()?>Rekap/showPDAM',
             async : true,
             dataType : 'json',
             success : function(data){
@@ -198,8 +198,6 @@ function rupiah($angka){
         });
     }
     $(document).ready(function(){
-        // alert(convertToRupiah(0));
-        // $('#modalHapus').modal('show');
         var iNama = $('#ValidasiNama');
         showPelangganIndihome();	//pemanggilan fungsi tampil barang.            
         // $('#hapus_data').click(function(){
@@ -209,9 +207,9 @@ function rupiah($angka){
         //     // $('[name="delID"]').val(id);
         // });
 
-        // $('#hapus_data').click(function(){
-        //     alert('asdasd');
-        // })
+        $('#hapus_data').click(function(){
+            console.log('asdasd');
+        });
         iNama.change(function(){
             var id = $(this).val();
             //alert(id);

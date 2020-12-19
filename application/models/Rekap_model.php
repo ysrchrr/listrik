@@ -27,6 +27,20 @@ class Rekap_model extends CI_Model{
 									WHERE pelanggan.jenis = "Indihome"');
 		return $tampil->result();
 	}
+	
+	public function tampilkanPDAM(){
+		$tampil =  $this->db->query('SELECT
+										pembayaran.id,
+										pelanggan.namaPelanggan,
+										pembayaran.tanggal,
+										pembayaran.keTokped,
+										pembayaran.kePerson
+									FROM
+										pembayaran
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
+									WHERE pelanggan.jenis = "PDAM"');
+		return $tampil->result();
+	}
 
     public function goGetData($id){
         $hsl = $this->db->query("SELECT * FROM pelanggan WHERE idPelanggan = '$id'");
@@ -64,6 +78,32 @@ class Rekap_model extends CI_Model{
 		return $query->result();
 	}
 
+	public function allRecords($ngene){
+		$query = $this->db->query("SELECT
+									pembayaran.idPelanggan,
+									pelanggan.namaPelanggan,
+									pelanggan.daya,
+									pembayaran.tanggal,
+									pembayaran.keTokped AS UangKeluar 
+								FROM
+									`pembayaran`
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan 
+								WHERE
+									tanggal LIKE '%$ngene%'");
+		return $query->result();
+	}
+
+	public function lsummary($tgl){
+		$sum = $this->db->query("SELECT
+									SUM(pembayaran.keTokped) AS keluar,
+									SUM(pembayaran.kePerson) AS masuk
+								FROM
+									`pembayaran` 
+								WHERE
+									pembayaran.tanggal LIKE '%$tgl%'");
+		return $sum->result();
+	}
+
 	public function dataSemua(){
 		$query = $this->db->query("SELECT
 									pembayaran.id,
@@ -91,6 +131,21 @@ class Rekap_model extends CI_Model{
 									`pembayaran`
 									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
 									WHERE pelanggan.jenis = 'Indihome'");
+		return $query->result();
+	}
+
+	public function allPDAM(){
+		$query = $this->db->query("SELECT
+									pembayaran.id,
+									pembayaran.idPelanggan,
+									pelanggan.namaPelanggan,
+									pelanggan.daya,
+									pembayaran.tanggal,
+									pembayaran.keTokped AS UangKeluar 
+								FROM
+									`pembayaran`
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
+									WHERE pelanggan.jenis = 'PDAM'");
 		return $query->result();
 	}
 }

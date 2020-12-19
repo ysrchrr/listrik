@@ -6,8 +6,12 @@ class Dashboard extends CI_Controller{
     }
     
     public function index(){
-        $data['title'] = "Dashboard";
-        $this->load->view('Dashboard/sidebar', $data);
+        $judul = array(
+          'title'=> "Dashboard",
+          'status' => "active",
+          'col' => "collapsed"
+        );
+        $this->load->view('Dashboard/sidebar', $judul);
         $this->load->view('Dashboard/topbar');
         $this->load->view('Dashboard/content');
         $this->load->view('Dashboard/footer');
