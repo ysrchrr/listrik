@@ -2,15 +2,31 @@
 class Rekap_model extends CI_Model{
     public function tampilkanSemua(){
         $tampil =  $this->db->query('SELECT
+										pembayaran.id,
 										pelanggan.namaPelanggan,
 										pembayaran.tanggal,
 										pembayaran.keTokped,
 										pembayaran.kePerson
 									FROM
 										pembayaran
-									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan');
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
+									WHERE pelanggan.jenis = "Listrik"');
 		return $tampil->result();
-    }
+	}
+	
+	public function tampilkanIndihome(){
+		$tampil =  $this->db->query('SELECT
+										pembayaran.id,
+										pelanggan.namaPelanggan,
+										pembayaran.tanggal,
+										pembayaran.keTokped,
+										pembayaran.kePerson
+									FROM
+										pembayaran
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
+									WHERE pelanggan.jenis = "Indihome"');
+		return $tampil->result();
+	}
 
     public function goGetData($id){
         $hsl = $this->db->query("SELECT * FROM pelanggan WHERE idPelanggan = '$id'");
@@ -44,7 +60,37 @@ class Rekap_model extends CI_Model{
 									`pembayaran`
 									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan 
 								WHERE
-									tanggal LIKE '%$ngene%'");
+									tanggal LIKE '%$ngene%' AND pelanggan.jenis = 'Listrik'");
+		return $query->result();
+	}
+
+	public function dataSemua(){
+		$query = $this->db->query("SELECT
+									pembayaran.id,
+									pembayaran.idPelanggan,
+									pelanggan.namaPelanggan,
+									pelanggan.daya,
+									pembayaran.tanggal,
+									pembayaran.keTokped AS UangKeluar 
+								FROM
+									`pembayaran`
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
+									WHERE pelanggan.jenis = 'Listrik'");
+		return $query->result();
+	}
+
+	public function allIndihome(){
+		$query = $this->db->query("SELECT
+									pembayaran.id,
+									pembayaran.idPelanggan,
+									pelanggan.namaPelanggan,
+									pelanggan.daya,
+									pembayaran.tanggal,
+									pembayaran.keTokped AS UangKeluar 
+								FROM
+									`pembayaran`
+									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
+									WHERE pelanggan.jenis = 'Indihome'");
 		return $query->result();
 	}
 }

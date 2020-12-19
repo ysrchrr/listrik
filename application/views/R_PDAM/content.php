@@ -3,7 +3,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Rekap Listrik</h1>
+        <h1 class="h3 mb-0 text-gray-800">Rekap DPAM</h1>
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
     </div>
     <!-- Content Row -->
@@ -20,7 +20,7 @@
                             <div class="col-md-12 mb-3">
                                 <label for="ValidasiNama">Nama Pelanggan</label>
                                 <?php 
-                                $namaP = $this->db->query("SELECT * FROM pelanggan WHERE jenis = 'Listrik' ORDER BY namaPelanggan");
+                                $namaP = $this->db->query("SELECT * FROM pelanggan WHERE jenis = 'PDAM' ORDER BY namaPelanggan");
                                 ?>
                                 <select class="custom-select" id="ValidasiNama" aria-describedby="ValidasiNamaFeedback" required>
                                     <option value="">Silakan pilih salah satu</option>
@@ -106,7 +106,26 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalHapusLabel">Hapus data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="delID" id="delIdPelanggan">
+                Apa km yakin mau hapus data?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ngga jadi</button>
+                <button type="button" class="btn btn-danger" id="btn-hapus">Iyaa hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 <!-- /.container-fluid -->
 
@@ -143,10 +162,10 @@ function rupiah($angka){
         for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
         return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
     }
-    function showPelangganListrik(){
+    function showPelangganIndihome(){
         $.ajax({
             type  : 'GET',
-            url   : '<?php echo base_url()?>Rekap/showListrik',
+            url   : '<?php echo base_url()?>Rekap/showIndihome',
             async : true,
             dataType : 'json',
             success : function(data){
@@ -159,7 +178,7 @@ function rupiah($angka){
                             // '<td>'+<?php //echo rupiah(data[i].keTokped)?>+'</td>'+
                             '<td>'+convertToRupiah(data[i].keTokped)+'</td>'+
                             '<td>'+convertToRupiah(data[i].kePerson)+'</td>'+
-                            '<td align="center"> <button type="button" nim="'+data[i].id+'" class="edit btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button>'+
+                            '<td align="center"><button type="button" idp="' + data[i].id + '" class="btn btn-danger btn-sm" id="hapus_data"><i class="fa fa-trash"></i></button>'+
                             '</tr>';
                 }
                 $('#show_data').html(html);
@@ -180,9 +199,19 @@ function rupiah($angka){
     }
     $(document).ready(function(){
         // alert(convertToRupiah(0));
+        // $('#modalHapus').modal('show');
         var iNama = $('#ValidasiNama');
-        showPelangganListrik();	//pemanggilan fungsi tampil barang.            
-        
+        showPelangganIndihome();	//pemanggilan fungsi tampil barang.            
+        // $('#hapus_data').click(function(){
+        //     alert('cok');
+        //     // var id = $(this).attr('idp');
+        //     // $('#modalHapus').modal('show');
+        //     // $('[name="delID"]').val(id);
+        // });
+
+        // $('#hapus_data').click(function(){
+        //     alert('asdasd');
+        // })
         iNama.change(function(){
             var id = $(this).val();
             //alert(id);
@@ -234,7 +263,7 @@ function rupiah($angka){
                     $('[id="daya"]').val("");
                     $('[id="tokopedia"]').val("");
                     $('[id="persons"]').val("");
-                    showPelangganListrik();
+                    showPelangganIndihome();
                     Swal.fire(
                         'Yeay!',
                         'Tagihan ke ' +hasilNama+ ' telah ditambahkan!',
@@ -247,5 +276,6 @@ function rupiah($angka){
             });
             return false;
         });
+
     });
 </script>

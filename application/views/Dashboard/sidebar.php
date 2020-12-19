@@ -67,9 +67,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Mau rekap apa beb?</h6>
-                        <a class="collapse-item" href="<?php echo base_url();?>rekap/listrik">Listrik</a>
-                        <a class="collapse-item" href="cards.html">Indihome</a>
-                        <a class="collapse-item" href="cards.html">PDAM</a>
+                        <a class="collapse-item" href="<?php echo base_url();?>Rekap/listrik">Listrik</a>
+                        <a class="collapse-item" href="<?php echo base_url();?>Rekap/indihome">Indihome</a>
+                        <a class="collapse-item" href="<?php echo base_url();?>Rekap/pdam">PDAM</a>
                     </div>
                 </div>
             </li>
@@ -84,6 +84,11 @@
                 Laporan
             </div>
             <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url(); ?>assets/index.html">
+                    <i class="fa fa-clock"></i>
+                    <span>Laporan Bulanan</span></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#headingUtilities"
                     aria-expanded="true" aria-controls="headingUtilities">
@@ -101,7 +106,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url(); ?>assets/index.html">
+                <a class="nav-link" href="<?php echo base_url(); ?>Rekap/rekapIndihome">
                     <i class="fas fa-fw fa-phone"></i>
                     <span>Rekapan Indihome</span></a>
             </li>

@@ -28,15 +28,25 @@ class Rekap extends CI_Controller{
     }
 
     public function rekapKeseluruhan(){
-      $judul['title'] = "Rekap Bulanan";
+      $judul['title'] = "Rekap Keseluruhan";
       $this->load->view('Dashboard/sidebar', $judul);
       $this->load->view('Dashboard/topbar');
       $this->load->view('R_Listrik/rekapKeseluruhan');
       $this->load->view('Dashboard/footer');
     }
       
+    public function getrekapKeseluruhan(){
+      $tampilPelanggan = $this->Rekap_model->dataSemua();
+      echo json_encode($tampilPelanggan);
+    }
+
     public function showListrik(){
       $tampilPelanggan = $this->Rekap_model->tampilkanSemua();
+      echo json_encode($tampilPelanggan);
+    }
+
+    public function showIndihome(){
+      $tampilPelanggan = $this->Rekap_model->tampilkanIndihome();
       echo json_encode($tampilPelanggan);
     }
 
@@ -54,5 +64,34 @@ class Rekap extends CI_Controller{
       $status = $this->input->post('status');
       $data = $this->Rekap_model->goAddTagihan($idPelanggan, $tanggal, $keTokped, $kePerson, $status);
       echo json_encode($data);
+    }
+
+    public function indihome(){
+      $judul['title'] = "Rekap Indihome";
+      $this->load->view('Dashboard/sidebar', $judul);
+      $this->load->view('Dashboard/topbar');
+      $this->load->view('R_Indihome/content');
+      $this->load->view('Dashboard/footer');
+    }
+
+    public function rekapIndihome(){
+      $judul['title'] = "Rekap Indihome";
+      $this->load->view('Dashboard/sidebar', $judul);
+      $this->load->view('Dashboard/topbar');
+      $this->load->view('R_Indihome/rekapIndihome');
+      $this->load->view('Dashboard/footer');
+    }
+
+    public function getRekapIndihome(){
+      $tampilPelanggan = $this->Rekap_model->allIndihome();
+      echo json_encode($tampilPelanggan);
+    }
+
+    public function pdam(){
+      $judul['title'] = "Rekap PDAM";
+      $this->load->view('Dashboard/sidebar', $judul);
+      $this->load->view('Dashboard/topbar');
+      $this->load->view('R_PDAM/content');
+      $this->load->view('Dashboard/footer');
     }
 }
