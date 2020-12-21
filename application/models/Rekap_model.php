@@ -6,7 +6,8 @@ class Rekap_model extends CI_Model{
 										pelanggan.namaPelanggan,
 										pembayaran.tanggal,
 										pembayaran.keTokped,
-										pembayaran.kePerson
+										pembayaran.kePerson,
+										pembayaran.total
 									FROM
 										pembayaran
 									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
@@ -20,7 +21,8 @@ class Rekap_model extends CI_Model{
 										pelanggan.namaPelanggan,
 										pembayaran.tanggal,
 										pembayaran.keTokped,
-										pembayaran.kePerson
+										pembayaran.kePerson,
+										pembayaran.total
 									FROM
 										pembayaran
 									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
@@ -34,7 +36,8 @@ class Rekap_model extends CI_Model{
 										pelanggan.namaPelanggan,
 										pembayaran.tanggal,
 										pembayaran.keTokped,
-										pembayaran.kePerson
+										pembayaran.kePerson,
+										pembayaran.total
 									FROM
 										pembayaran
 									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan
@@ -58,8 +61,8 @@ class Rekap_model extends CI_Model{
 		return $hasil;
 	}
 	
-	public function goAddTagihan($idPelanggan, $tanggal, $keTokped, $kePerson, $status){
-		$query = $this->db->query("INSERT INTO `persons`.`pembayaran`(`idPelanggan`, `tanggal`, `keTokped`, `kePerson`, `status`) VALUES ('$idPelanggan', '$tanggal', '$keTokped', '$kePerson', '$status')");
+	public function goAddTagihan($idPelanggan, $tanggal, $keTokped, $kePerson, $total){
+		$query = $this->db->query("INSERT INTO `persons`.`pembayaran`(`idPelanggan`, `tanggal`, `keTokped`, `kePerson`, `total`) VALUES ('$idPelanggan', '$tanggal', '$keTokped', '$kePerson', '$total')");
         return $query;
 	}
 
@@ -69,7 +72,7 @@ class Rekap_model extends CI_Model{
 									pelanggan.namaPelanggan,
 									pelanggan.daya,
 									pembayaran.tanggal,
-									pembayaran.keTokped AS UangKeluar 
+									pembayaran.total
 								FROM
 									`pembayaran`
 									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan 
@@ -84,7 +87,7 @@ class Rekap_model extends CI_Model{
 									pelanggan.namaPelanggan,
 									pelanggan.daya,
 									pembayaran.tanggal,
-									pembayaran.keTokped AS UangKeluar 
+									pembayaran.total
 								FROM
 									`pembayaran`
 									JOIN pelanggan ON pelanggan.idPelanggan = pembayaran.idPelanggan 

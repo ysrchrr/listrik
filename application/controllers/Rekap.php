@@ -31,7 +31,6 @@ class Rekap extends CI_Controller{
       echo json_encode($data);
     }
 
-    
     public function allRecord(){
       $ngene = $this->input->post('ngene');
       $tampilPelanggan = $this->Rekap_model->allRecords($ngene);
@@ -77,8 +76,8 @@ class Rekap extends CI_Controller{
       $tanggal = $this->input->post('tanggal');
       $keTokped = $this->input->post('keTokped');
       $kePerson = $this->input->post('kePerson');
-      $status = $this->input->post('status');
-      $data = $this->Rekap_model->goAddTagihan($idPelanggan, $tanggal, $keTokped, $kePerson, $status);
+      $total = $this->input->post('total');
+      $data = $this->Rekap_model->goAddTagihan($idPelanggan, $tanggal, $keTokped, $kePerson, $total);
       echo json_encode($data);
     }
 

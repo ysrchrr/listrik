@@ -3,13 +3,30 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Rekap Bulanan</h1>
+        <h1 class="h3 mb-0 text-gray-800">Rekap Bulanan Listrik</h1>
         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
     </div>
     <!-- Content Row -->
     <div class="row">
         <!-- kiri -->
-        <div class="col-lg-12 mb-4">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary keterangan">Ringkasan Pemasukan dan Pengeluaran</h6>
+                </div>
+                <div class="card-body">
+                <?php
+                // $this->db->select('(SELECT SUM(pembayaran.keTokped) FROM pembayaran WHERE payments.invoice_id=4) AS amount_paid', FALSE);
+                // $query = $this->db->get('mytable');
+                ?>
+                    <!-- <h6 class="font-weight-bold">Listrik, Indihome, PDAM</h6>
+                    <p id="sumOut">Pengeluaran : </p>
+                    <p id="sumIn">Pemasukan : </p> -->
+                    In development...
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Silakan pilih waktu untuk ditampilkan</h6>
@@ -36,7 +53,7 @@
                                 </select>
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label>Bulan</label>
+                                <label>Tahun</label>
                                 <select class="custom-select" id="tahun" name="tahun">
                                     <option value="">Silakan pilih tahun</option>
                                     <option value="2019">2019</option>
@@ -63,7 +80,7 @@
                                 <th style="vertical-align: center">Nama Pelanggan</th>
                                 <th style="vertical-align: center">Daya</th>
                                 <th style="vertical-align: center">Periode</th>
-                                <th style="vertical-align: center">Jumlah keluar</th>
+                                <th style="vertical-align: center">Jumlah tagihan</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">
@@ -112,7 +129,10 @@ function rupiah($angka){
             $('#dataTable').DataTable().destroy();
             tahun = $(this).val();
             bulan = iBulan.val();
+            // txttahun = $(this).find(":selected").text();
+            // txtbulan = iBulan.find(":selected").text();
             dadine = tahun+'-'+bulan
+            // $('.keterangan').html('Ringkasan Pemasukan dan Pengeluaran pada '+txtbulan+' '+txttahun);
             if(iBulan.val() == ''){
                 alert("Bulan harus diisi");
             } else {
@@ -131,7 +151,7 @@ function rupiah($angka){
                                     '<td>'+data[i].namaPelanggan+'</td>'+
                                     '<td>'+data[i].daya+'</td>'+
                                     '<td>'+data[i].tanggal+'</td>'+
-                                    '<td>'+convertToRupiah(data[i].UangKeluar)+'</td>'+
+                                    '<td>'+convertToRupiah(data[i].total)+'</td>'+
                                     '</tr>';
                         }
                         $('#show_data').html(html);
@@ -151,6 +171,27 @@ function rupiah($angka){
                     }
                 });
             }
+            // $.ajax({
+            //     type  : 'POST',
+            //     url   : '<?php echo base_url()?>Rekap/getSummary',
+            //     async : true,
+            //     dataType : 'json',
+            //     data: {ngene: dadine},
+            //     success : function(data){
+            //         var otokped = '';
+            //         var operson = '';
+            //         var i;
+            //         for(i=0; i<data.length; i++){
+            //             otokped += data[i].keluar;
+            //             operson += data[i].masuk;
+            //             $('sumOut').html(otokped+'aaaaaaaaaaa');
+            //             $('sumIn').html(otokped);
+            //         }
+            //     },
+            //     error: function(xhr, ajaxOptions, thrownError){
+            //             console.log(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+            //     }
+            // });
         });
 
         iBulan.change(function(){
@@ -173,7 +214,7 @@ function rupiah($angka){
                                 '<td>'+data[i].namaPelanggan+'</td>'+
                                 '<td>'+data[i].daya+'</td>'+
                                 '<td>'+data[i].tanggal+'</td>'+
-                                '<td>'+convertToRupiah(data[i].UangKeluar)+'</td>'+
+                                '<td>'+convertToRupiah(data[i].total)+'</td>'+
                                 '</tr>';
                     }
                     $('#show_data').html(html);

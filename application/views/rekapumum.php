@@ -53,7 +53,7 @@
                                 </select>
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label>Bulan</label>
+                                <label>Tahun</label>
                                 <select class="custom-select" id="tahun" name="tahun">
                                     <option value="">Silakan pilih tahun</option>
                                     <option value="2019">2019</option>
@@ -80,7 +80,7 @@
                                 <th style="vertical-align: center">Nama Pelanggan</th>
                                 <th style="vertical-align: center">Daya</th>
                                 <th style="vertical-align: center">Periode</th>
-                                <th style="vertical-align: center">Jumlah keluar</th>
+                                <th style="vertical-align: center">Jumlah tagihan</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">
@@ -138,7 +138,7 @@ function rupiah($angka){
             } else {
                 $.ajax({
                     type  : 'POST',
-                    url   : '<?php echo base_url()?>Rekap/getRekapBulanan',
+                    url   : '<?php echo base_url()?>Rekap/allRecord',
                     async : true,
                     dataType : 'json',
                     data: {ngene: dadine},
@@ -151,7 +151,7 @@ function rupiah($angka){
                                     '<td>'+data[i].namaPelanggan+'</td>'+
                                     '<td>'+data[i].daya+'</td>'+
                                     '<td>'+data[i].tanggal+'</td>'+
-                                    '<td>'+convertToRupiah(data[i].UangKeluar)+'</td>'+
+                                    '<td>'+convertToRupiah(data[i].total)+'</td>'+
                                     '</tr>';
                         }
                         $('#show_data').html(html);
@@ -214,7 +214,7 @@ function rupiah($angka){
                                 '<td>'+data[i].namaPelanggan+'</td>'+
                                 '<td>'+data[i].daya+'</td>'+
                                 '<td>'+data[i].tanggal+'</td>'+
-                                '<td>'+convertToRupiah(data[i].UangKeluar)+'</td>'+
+                                '<td>'+convertToRupiah(data[i].total)+'</td>'+
                                 '</tr>';
                     }
                     $('#show_data').html(html);
@@ -222,9 +222,6 @@ function rupiah($angka){
                             dom: 'Bfrtip',
                                 buttons: [
                                     'excel', 'pdf', 'print'
-                                ],
-                                "columnDefs": [
-                                    { "type": "num" }
                                 ],
                             "language" : {
                                 "emptyTable" : "Belum ada data:(",

@@ -70,6 +70,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="persons">Total</label>
+                                <input type="text" class="form-control" id="total" placeholder="<3" name="person" onkeypress="javascript:return isNumber(event)" maxlength="8" required readonly>
+                                <div class="valid-feedback">
+                                    Cpat bersyukur!
+                                </div>
+                            </div>
+                        </div>
                         <button class="btn btn-primary" type="button" id="btn-save" style="width: 100%" disabled="true">Tambah tagihan</button>
                     </form>
                 </div>
@@ -90,7 +99,7 @@
                                 <th style="vertical-align: center">Bulan</th>
                                 <th style="vertical-align: center">Tokopedia</th>
                                 <th>Person's</th>
-                                <th style="text-align: right; vertical-align: center">Actions</th>
+                                <th style="text-align: right; vertical-align: center">Total</th>
                             </tr>
                         </thead>
                         <tbody id="show_data">
@@ -150,6 +159,7 @@ function rupiah($angka){
 <script type="text/javascript">
     var loading = $('#loadingajax');
     var iTokped = $('#tokopedia');
+    var iPersons = $('#persons');
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -178,7 +188,8 @@ function rupiah($angka){
                             // '<td>'+<?php //echo rupiah(data[i].keTokped)?>+'</td>'+
                             '<td>'+convertToRupiah(data[i].keTokped)+'</td>'+
                             '<td>'+convertToRupiah(data[i].kePerson)+'</td>'+
-                            '<td align="center"><button type="button" idp="' + data[i].id + '" class="btn btn-danger btn-sm" id="hapus_data"><i class="fa fa-trash"></i></button>'+
+                            '<td>'+convertToRupiah(data[i].total)+'</td>'+
+                            // '<td align="center"><button type="button" idp="' + data[i].id + '" class="btn btn-danger btn-sm" id="hapus_data"><i class="fa fa-trash"></i></button>'+
                             '</tr>';
                 }
                 $('#show_data').html(html);
@@ -242,7 +253,7 @@ function rupiah($angka){
             var tanggal = today;
             var keTokped = $('#tokopedia').val();
             var kePerson = $('#persons').val();
-            var status = 0;
+            var total = $('#total').val();
             var hasilNama = $('#ValidasiNama').find(":selected").text();
             // alert(idPelanggan + tanggal +keTokped + kePerson + status);
             // console.log(idPelanggan + '|' + namaPelanggan+ '|' + daya+ '|' + jenis);
@@ -255,7 +266,7 @@ function rupiah($angka){
                     tanggal: tanggal,
                     keTokped: keTokped,
                     kePerson: kePerson,
-                    status: status
+                    total: total
                 },
                 success: function(data) {
                     $('[id="ValidasiNama"]').val("");
@@ -263,6 +274,7 @@ function rupiah($angka){
                     $('[id="daya"]').val("");
                     $('[id="tokopedia"]').val("");
                     $('[id="persons"]').val("");
+                    $('[id="total"]').val("");
                     showPelangganIndihome();
                     Swal.fire(
                         'Yeay!',
@@ -277,5 +289,18 @@ function rupiah($angka){
             return false;
         });
 
+        iTokped.change(function(){
+            var a = $(this).val();
+            var b = iPersons.val();
+            var c = parseFloat(a) + parseFloat(b);
+            $('#total').val(c);
+        });
+
+        iPersons.change(function(){
+            var a = iTokped.val();
+            var b = $(this).val();
+            var c = parseFloat(a) + parseFloat(b);
+            $('#total').val(c);
+        });
     });
 </script>
